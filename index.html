@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NUM by Mala Masti — Hardware Advisory for AI-Native Chip Startups</title>
-  <meta name="description" content="Strategic advisor to early-stage VLSI chip startups using AI to redesign hardware processes for memory, power and compute efficiency." />
+  <title>NUM by Mala Masti — Hardware Advisory</title>
+  <meta name="description" content="Strategic advisor to early-stage VLSI and chip startups using AI to redesign hardware processes for memory, power and compute efficiency." />
   <meta property="og:title" content="NUM by Mala Masti" />
-  <meta property="og:description" content="Strategic advisor to early-stage VLSI chip startups using AI to redesign hardware processes for memory, power and compute efficiency." />
+  <meta property="og:description" content="Strategic advisor to early-stage VLSI and chip startups using AI to redesign hardware processes for memory, power and compute efficiency." />
   <meta property="og:type" content="website" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -42,20 +42,21 @@
     /* ── NAV ── */
     nav {
       position: sticky; top: 0; z-index: 100;
-      background: var(--paper);
-      border-bottom: 1px solid var(--paper-3);
+      background: rgba(26,43,74,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
       padding: 0 2rem;
       display: flex; align-items: center; justify-content: space-between;
       height: 60px;
     }
-    .nav-brand { font-family: var(--serif); font-size: 1.2rem; color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
+    .nav-brand { font-family: var(--serif); font-size: 1.2rem; color: #fff; text-decoration: none; letter-spacing: -0.01em; }
     .nav-brand span { color: var(--accent); }
     .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a { font-size: 0.85rem; color: var(--ink-mid); text-decoration: none; letter-spacing: 0.02em; transition: color 0.15s; }
+    .nav-links a { font-size: 0.85rem; color: rgba(255,255,255,0.65); text-decoration: none; letter-spacing: 0.02em; transition: color 0.15s; }
     .nav-links a:hover { color: var(--accent); }
     .nav-cta {
       font-size: 0.82rem; font-weight: 500;
-      background: var(--accent); color: #fff;
+      background: var(--teal); color: #fff;
       padding: 7px 18px; border-radius: var(--r);
       text-decoration: none; transition: opacity 0.15s;
       letter-spacing: 0.01em;
@@ -71,7 +72,7 @@
     .hero-eyebrow {
       display: inline-block;
       font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--accent); background: var(--accent-lt);
+      color: #b85c2a; background: #f0d8c8;
       padding: 4px 12px; border-radius: 20px; margin-bottom: 1.25rem;
     }
     .hero h1 {
@@ -79,39 +80,39 @@
       font-size: clamp(2.4rem, 4vw, 3.2rem);
       line-height: 1.15;
       letter-spacing: -0.02em;
-      color: var(--ink);
+      color: #ffffff;
       margin-bottom: 1.25rem;
     }
     .hero h1 em { font-style: italic; color: var(--accent); }
     .hero-sub {
-      font-size: 1.05rem; color: var(--ink-mid);
+      font-size: 1.05rem; color: rgba(255,255,255,0.6);
       line-height: 1.75; max-width: 480px; margin-bottom: 2rem;
     }
     .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
     .btn-primary {
-      background: var(--ink); color: var(--paper);
+      background: var(--teal); color: #fff;
       padding: 11px 24px; border-radius: var(--r);
       font-size: 0.9rem; font-weight: 500;
       text-decoration: none; transition: background 0.15s;
     }
-    .btn-primary:hover { background: var(--accent); }
+    .btn-primary:hover { background: #3D9DB2; }
     .btn-outline {
-      border: 1px solid var(--paper-3); color: var(--ink-mid);
+      border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7);
       padding: 10px 22px; border-radius: var(--r);
       font-size: 0.9rem; text-decoration: none;
       transition: border-color 0.15s, color 0.15s;
     }
-    .btn-outline:hover { border-color: var(--ink-mid); color: var(--ink); }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
     .hero-visual {
       display: flex; flex-direction: column; gap: 12px;
     }
     .stat-card {
-      background: var(--paper-2); border: 1px solid var(--paper-3);
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
       border-radius: 10px; padding: 1rem 1.25rem;
       display: flex; align-items: center; gap: 1rem;
     }
-    .stat-num { font-family: var(--serif); font-size: 2rem; color: var(--ink); min-width: 60px; }
-    .stat-desc { font-size: 0.82rem; color: var(--ink-mid); line-height: 1.45; }
+    .stat-num { font-family: var(--serif); font-size: 2rem; color: #ffffff; min-width: 60px; }
+    .stat-desc { font-size: 0.82rem; color: rgba(255,255,255,0.55); line-height: 1.45; }
     .stat-card.accent-teal { border-left: 3px solid var(--teal); }
     .stat-card.accent-rust { border-left: 3px solid var(--accent); }
 
@@ -120,7 +121,7 @@
     .section-inner { max-width: var(--max); margin: 0 auto; }
     .section-tag {
       font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--ink-soft); display: block; margin-bottom: 0.6rem;
+      color: var(--teal); display: block; margin-bottom: 0.6rem;
     }
     .section-h2 {
       font-family: var(--serif);
@@ -160,7 +161,7 @@
       padding: 1.5rem; position: relative; overflow: hidden;
       transition: border-color 0.2s;
     }
-    .area-card:hover { border-color: var(--paper-3); box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+    .area-card:hover { border-color: var(--teal); box-shadow: 0 4px 18px rgba(45,125,143,0.12); }
     .area-label {
       font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
       color: var(--teal); background: var(--teal-lt);
@@ -210,9 +211,9 @@
     .cta-lead { color: rgba(255,255,255,0.65); font-size: 1rem; line-height: 1.75; margin-bottom: 2rem; }
     .cta-email {
       display: inline-block;
-      font-size: 1.1rem; color: #fff; font-family: var(--serif);
+      font-size: 1.1rem; color: var(--accent); font-family: var(--serif);
       font-style: italic; margin-bottom: 2rem;
-      border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 2px;
+      border-bottom: 1px solid rgba(201,168,76,0.4); padding-bottom: 2px;
       text-decoration: none;
     }
     .cta-email:hover { border-color: rgba(255,255,255,0.7); }
@@ -227,16 +228,16 @@
 
     /* ── FOOTER ── */
     footer {
-      background: var(--paper-2); border-top: 1px solid var(--paper-3);
+      background: #111C2E; border-top: 1px solid rgba(255,255,255,0.07);
       padding: 2rem; text-align: center;
     }
     .footer-inner { max-width: var(--max); margin: 0 auto; }
-    .footer-brand { font-family: var(--serif); font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .footer-brand { font-family: var(--serif); font-size: 1.1rem; margin-bottom: 0.5rem; color: rgba(255,255,255,0.5); }
     .footer-brand span { color: var(--accent); }
     .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1rem; }
-    .footer-links a { font-size: 0.82rem; color: var(--ink-soft); text-decoration: none; transition: color 0.15s; }
-    .footer-links a:hover { color: var(--ink); }
-    .footer-copy { font-size: 0.78rem; color: var(--ink-soft); }
+    .footer-links a { font-size: 0.82rem; color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.15s; }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.25); }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
@@ -269,12 +270,12 @@
   </nav>
 
   <!-- HERO -->
-  <section style="padding: 0;">
+  <section style="padding: 0; background: var(--ink);">
     <div class="hero">
       <div class="hero-text">
         <span class="hero-eyebrow">Chip advisory · Bengaluru &amp; global</span>
         <h1>Where deep silicon<br/>expertise meets <em>AI-native</em><br/>hardware design</h1>
-        <p class="hero-sub">Strategic guidance for early-stage VLSI chip startups using AI to rethink memory, power, and compute efficiency — from someone who has been inside 40+ IPs across Qualcomm and Intel for 20 years.</p>
+        <p class="hero-sub">Strategic guidance for early-stage VLSI and chip startups using AI to rethink memory, power, and compute efficiency — from someone who has been inside 40+ IPs across Qualcomm and Intel for 20 years.</p>
         <div class="hero-actions">
           <a class="btn-primary" href="#advisory">See advisory areas</a>
           <a class="btn-outline" href="#about">About Mala</a>
@@ -425,7 +426,7 @@
       <div class="about-grid fade-in">
         <div>
           <div class="about-portrait">
-  <img src="assets/mala.JPG" alt="Mala Masti" 
+  <img src="assets/mala.jpg" alt="Mala Masti" 
   style="width:100%;height:100%;object-fit:cover;border-radius:12px;" />
 </div>
             <div class="about-portrait-sub">Mala S Masti</div>
@@ -447,7 +448,7 @@
           <div class="about-links">
             <a class="about-link" href="https://www.linkedin.com/in/malamasti/" target="_blank" rel="noopener">LinkedIn ↗</a>
             <a class="about-link" href="https://github.com/msmasti" target="_blank" rel="noopener">GitHub ↗</a>
-            <a class="about-link" href="doc/resume.html" target="_blank">Resume ↗</a>
+            <a class="about-link" href="resume.html" target="_blank">Resume ↗</a>
           </div>
         </div>
       </div>
