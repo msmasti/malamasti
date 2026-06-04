@@ -7,7 +7,7 @@ Strategic advisory practice for early-stage VLSI and chip startups using AI to r
 ```
 index.html          ← Main website
 CNAME               ← Custom domain config (malamasti.com)
-docs/               ← Resume PDF goes here
+doc/                ← Resume PDF goes here
 assets/             ← Any images/icons go here
 README.md           ← This file
 ```
