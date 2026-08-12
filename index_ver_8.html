@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NUM by Mala Masti — Hardware Advisory</title>
+<meta name="description" content="Advisor for early-stage chip and EDA startups — team structure, verification strategy and program execution, drawn from shipping several SoCs and IPs at Qualcomm and Intel" />
+<meta property="og:title" content="NUM by Mala Masti" />
+<meta property="og:description" content="Advisor for early-stage chip and EDA startups — team structure, verification strategy and program execution, drawn from shipping several SoCs and IPs at Qualcomm and Intel" />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+<style>
+:root {
+--ink: #1A2B4A;
+--ink-mid: #4A5568;
+--ink-soft: #8A95A3;
+--paper: #F7F8FA;
+--paper-2: #EDF0F4;
+--paper-3: #D6DCE5;
+--accent: #C9A84C;
+--accent-lt: #F4EAC8;
+--teal: #2D7D8F;
+--teal-lt: #D8EEF2;
+--serif: 'DM Serif Display', Georgia, serif;
+--sans: 'DM Sans', system-ui, sans-serif;
+--max: 1080px;
+--r: 6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+font-family: var(--sans);
+background: var(--paper);
+color: var(--ink);
+font-size: 16px;
+line-height: 1.7;
+-webkit-font-smoothing: antialiased;
+}
+/* ── NAV ── */
+nav {
+position: sticky; top: 0; z-index: 100;
+background: rgba(26,43,74,0.97);
+backdrop-filter: blur(12px);
+border-bottom: 1px solid rgba(255,255,255,0.08);
+padding: 0 2rem;
+display: flex; align-items: center; justify-content: space-between;
+height: 60px;
+}
+.nav-brand { font-family: var(--serif); font-size: 1.2rem; color: #fff; text-decoration: none; letter-spacing: -0.01em; }
+.nav-brand span { color: var(--accent); }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { font-size: 0.85rem; color: rgba(255,255,255,0.65); text-decoration: none; letter-spacing: 0.02em; transition: color 0.15s; }
+.nav-links a:hover { color: var(--accent); }
+.nav-cta {
+font-size: 0.82rem; font-weight: 500;
+background: var(--teal); color: #fff;
+padding: 7px 18px; border-radius: var(--r);
+text-decoration: none; transition: opacity 0.15s;
+letter-spacing: 0.01em;
+}
+.nav-cta:hover { opacity: 0.88; }
+/* ── HERO ── */
+.hero {
+max-width: var(--max); margin: 0 auto;
+padding: 7rem 2rem 5rem;
+display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+}
+.hero-eyebrow {
+display: inline-block;
+font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+color: #b85c2a; background: #f0d8c8;
+padding: 4px 12px; border-radius: 20px; margin-bottom: 1.25rem;
+}
+.hero h1 {
+font-family: var(--serif);
+font-size: clamp(1.9rem, 3vw, 2.6rem);
+line-height: 1.2;
+letter-spacing: -0.02em;
+color: #ffffff;
+margin-bottom: 1.25rem;
+}
+.hero h1 em { font-style: italic; color: var(--accent); }
+.hero-sub {
+font-size: 1.05rem; color: rgba(255,255,255,0.6);
+line-height: 1.75; max-width: 480px; margin-bottom: 2rem;
+}
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-primary {
+background: var(--teal); color: #fff;
+padding: 11px 24px; border-radius: var(--r);
+font-size: 0.9rem; font-weight: 500;
+text-decoration: none; transition: background 0.15s;
+}
+.btn-primary:hover { background: #3D9DB2; }
+.btn-outline {
+border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7);
+padding: 10px 22px; border-radius: var(--r);
+font-size: 0.9rem; text-decoration: none;
+transition: border-color 0.15s, color 0.15s;
+}
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+.hero-visual {
+display: flex; flex-direction: column; gap: 12px;
+}
+.stat-card {
+background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+border-radius: 10px; padding: 1rem 1.25rem;
+display: flex; align-items: center; gap: 1rem;
+}
+.stat-num { font-family: var(--serif); font-size: 2rem; color: #ffffff; min-width: 60px; }
+.stat-desc { font-size: 0.82rem; color: rgba(255,255,255,0.55); line-height: 1.45; }
+.stat-card.accent-teal { border-left: 3px solid var(--teal); }
+.stat-card.accent-rust { border-left: 3px solid var(--accent); }
+/* ── SECTION BASE ── */
+section { padding: 5rem 2rem; }
+.section-inner { max-width: var(--max); margin: 0 auto; }
+.section-tag {
+font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+color: var(--teal); display: block; margin-bottom: 0.6rem;
+}
+.section-h2 {
+font-family: var(--serif);
+font-size: clamp(1.8rem, 3vw, 2.4rem);
+letter-spacing: -0.02em; line-height: 1.2;
+color: var(--ink); margin-bottom: 1rem;
+}
+.section-lead { font-size: 1rem; color: var(--ink-mid); max-width: 560px; line-height: 1.75; }
+/* ── WHAT IS NUM ── */
+.what-grid {
+display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-top: 3rem;
+}
+.what-card {
+background: var(--paper-2); border: 1px solid var(--paper-3);
+border-radius: 10px; padding: 1.5rem;
+}
+.what-icon { font-size: 1.4rem; margin-bottom: 0.75rem; }
+.what-card h3 { font-family: var(--serif); font-size: 1.15rem; margin-bottom: 0.5rem; color: var(--ink); }
+.what-card p { font-size: 0.875rem; color: var(--ink-mid); line-height: 1.65; }
+/* ── WHO IT'S FOR ── */
+.who-bg { background: var(--paper-2); }
+.who-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2.5rem; }
+.who-item { display: flex; gap: 1rem; align-items: flex-start; }
+.who-dot {
+width: 8px; height: 8px; border-radius: 50%;
+background: var(--accent); flex-shrink: 0; margin-top: 8px;
+}
+.who-item h4 { font-size: 0.92rem; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+.who-item p { font-size: 0.84rem; color: var(--ink-mid); line-height: 1.6; }
+/* ── ADVISORY AREAS ── */
+.areas-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.25rem; margin-top: 2.5rem; }
+.area-card {
+border: 1px solid var(--paper-3); border-radius: 10px;
+padding: 1.5rem; position: relative; overflow: hidden;
+transition: border-color 0.2s;
+}
+.area-card:hover { border-color: var(--teal); box-shadow: 0 4px 18px rgba(45,125,143,0.12); }
+.area-label {
+font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+color: var(--teal); background: var(--teal-lt);
+display: inline-block; padding: 3px 9px; border-radius: 20px; margin-bottom: 0.6rem;
+}
+.area-card h3 { font-family: var(--serif); font-size: 1.1rem; color: var(--ink); margin-bottom: 0.5rem; }
+.area-card p { font-size: 0.855rem; color: var(--ink-mid); line-height: 1.65; }
+/* ── ABOUT ── */
+.about-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 4rem; align-items: start; margin-top: 2.5rem; }
+.about-portrait {
+background: var(--paper-3); border-radius: 12px;
+aspect-ratio: 3/4; display: flex; flex-direction: column;
+align-items: center; justify-content: center;
+font-size: 4rem; color: var(--ink-soft);
+position: relative; overflow: hidden;
+}
+.about-portrait-initials {
+font-family: var(--serif); font-size: 3.5rem; color: var(--ink-mid);
+line-height: 1;
+}
+.about-portrait-sub { font-size: 0.75rem; color: var(--ink-soft); margin-top: 8px; }
+.about-body p { font-size: 0.95rem; color: var(--ink-mid); line-height: 1.8; margin-bottom: 1rem; }
+.about-body p strong { color: var(--ink); font-weight: 500; }
+.credential-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.25rem; }
+.cred-pill {
+font-size: 0.78rem; padding: 4px 12px;
+border: 1px solid var(--paper-3); border-radius: 20px;
+color: var(--ink-mid); background: var(--paper-2);
+}
+.about-links { display: flex; gap: 12px; margin-top: 1.5rem; }
+.about-link {
+font-size: 0.85rem; color: var(--teal); text-decoration: none;
+border-bottom: 1px solid var(--teal-lt); padding-bottom: 1px;
+transition: border-color 0.15s;
+}
+.about-link:hover { border-color: var(--teal); }
+/* ── CTA ── */
+.cta-section { background: var(--ink); }
+.cta-inner {
+max-width: 640px; margin: 0 auto; text-align: center;
+padding: 5rem 2rem;
+}
+.cta-section .section-tag { color: rgba(255,255,255,0.45); }
+.cta-section .section-h2 { color: #fff; margin-bottom: 1rem; }
+.cta-lead { color: rgba(255,255,255,0.65); font-size: 1rem; line-height: 1.75; margin-bottom: 2rem; }
+.cta-email {
+display: inline-block;
+font-size: 1.1rem; color: var(--accent); font-family: var(--serif);
+font-style: italic; margin-bottom: 2rem;
+border-bottom: 1px solid rgba(201,168,76,0.4); padding-bottom: 2px;
+text-decoration: none;
+}
+.cta-email:hover { border-color: rgba(255,255,255,0.7); }
+.cta-btn {
+background: var(--accent); color: #fff;
+padding: 13px 30px; border-radius: var(--r);
+font-size: 0.95rem; font-weight: 500;
+text-decoration: none; display: inline-block;
+transition: opacity 0.15s;
+}
+.cta-btn:hover { opacity: 0.88; }
+/* ── FOOTER ── */
+footer {
+background: #111C2E; border-top: 1px solid rgba(255,255,255,0.07);
+padding: 2rem; text-align: center;
+}
+.footer-inner { max-width: var(--max); margin: 0 auto; }
+.footer-brand { font-family: var(--serif); font-size: 1.1rem; margin-bottom: 0.5rem; color: rgba(255,255,255,0.5); }
+.footer-brand span { color: var(--accent); }
+.footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1rem; }
+.footer-links a { font-size: 0.82rem; color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.15s; }
+.footer-links a:hover { color: var(--accent); }
+.footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.25); }
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+nav { padding: 0 1rem; }
+.nav-links { display: none; }
+.hero { grid-template-columns: 1fr; padding: 4rem 1.5rem 3rem; gap: 2.5rem; }
+.what-grid { grid-template-columns: 1fr; }
+.who-grid { grid-template-columns: 1fr; }
+.areas-grid { grid-template-columns: 1fr; }
+.about-grid { grid-template-columns: 1fr; }
+section { padding: 3.5rem 1.5rem; }
+}
+/* ── FADE IN ── */
+.fade-in { opacity: 0; transform: translateY(18px); transition: opacity 0.55s ease, transform 0.55s ease; }
+.fade-in.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+<a class="nav-brand" href="#"><span>NUM</span> by Mala Masti</a>
+<ul class="nav-links">
+<li><a href="#what">What is NUM</a></li>
+<li><a href="#advisory">Advisory</a></li>
+<li><a href="#about">About</a></li>
+</ul>
+<a class="nav-cta" href="mailto:info@malamasti.com">Get in touch</a>
+</nav>
+
+<!-- HERO -->
+<section style="padding: 0; background: var(--ink);">
+<div class="hero">
+<div class="hero-text">
+<span class="hero-eyebrow">Chip advisory · Bengaluru &amp; global</span>
+<h1>From inside chip products<br/>to helping start-ups</h1>
+<p class="hero-sub">Advisor for early-stage chip and EDA startups — team structure, verification strategy and program execution, drawn from shipping several SoCs and IPs at Qualcomm and Intel</p>
+<div class="hero-actions">
+<a class="btn-primary" href="#advisory">See advisory areas</a>
+<a class="btn-outline" href="#about">About Mala</a>
+</div>
+</div>
+<div class="hero-visual">
+<div class="stat-card accent-teal">
+<div class="stat-num">20+</div>
+<div class="stat-desc">Years across full chip life cycle — IP conception to post-silicon, spanning Qualcomm, Intel, and academia</div>
+</div>
+<div class="stat-card accent-rust">
+<div class="stat-num">40+</div>
+<div class="stat-desc">IPs owned, verified, and shipped across Xeon data server, Core Ultra client, graphics, gaming, image processing, DFT, Telemetry, network edge and MSM modem families</div>
+</div>
+<div class="stat-card">
+<div class="stat-num">80+</div>
+<div class="stat-desc"> IP programs managed across multi-site global teams overall, delivering upto 10 concurrent SoCs at a time</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- WHAT IS NUM -->
+<section id="what" style="background: var(--paper-2);">
+<div class="section-inner">
+<span class="section-tag">What is NUM</span>
+<h2 class="section-h2">Beyond mentoring - networks, resources and more</h2>
+<p class="section-lead">NUM — a trusted partner for hardware founders</p>
+<div class="what-grid fade-in">
+<div class="what-card">
+<div class="what-icon">🧭</div>
+<h3>Network</h3>
+<p>Bringing in two decades of the ecosystem - engineering talent, EDA vendors, domain experts - to grow your footprint in the silicon world</p>
+</div>
+<div class="what-card">
+<div class="what-icon">🔓</div>
+<h3>Unblock</h3>
+<p>Offering a fresh angle to problems - technical limitations, execution challenges, tool issues, interface incompatiibilities, avaiable capabilities </p>
+</div>
+<div class="what-card">
+<div class="what-icon">🎯</div>
+<h3>Mentor</h3>
+<p>Helping engineers - think, plan, set up frameworks, prioritize features, identify milestones and more</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- WHO IT'S FOR -->
+<section id="who">
+<div class="section-inner">
+<span class="section-tag">Who this is for</span>
+<h2 class="section-h2">Early-stage teams optimizing<br/>tools or building silicon</h2>
+<p class="section-lead">NUM advisory is a fit if any of these describes your situation.</p>
+<div class="who-grid fade-in">
+<div class="who-item">
+<div class="who-dot"></div>
+<div>
+<h4>First-time hardware founding team</h4>
+<p>Your team is technically sound and can benefit with some practical perspectives and tested examples from experiential lessons</p>
+</div>
+</div>
+<div class="who-item">
+<div class="who-dot"></div>
+<div>
+<h4>Scaling a small DV team</h4>
+<p>You're growing your design verification team and want to scale your onboarding structure, shared infrastructure, keeping quality intact</p>
+</div>
+</div>
+<div class="who-item">
+<div class="who-dot"></div>
+<div>
+<h4>Inherited IP, unknown risk</h4>
+<p>You're integrating third-party or legacy IPs into your SoC and need insights on what to look for, what can go wrong</p>
+</div>
+</div>
+<div class="who-item">
+<div class="who-dot"></div>
+<div>
+<h4>Exploring AI in your verification flow</h4>
+<p>You're piloting AI flows and need help designing various scenarios and bench-marking several possibilities for optimal performance</p>
+</div>
+</div>
+<div class="who-item">
+<div class="who-dot"></div>
+<div>
+<h4>Custom Expertise Requirements</h4>
+<p>You need experienced talent with specific in-depth protocol know-how or you engineers with varied, broad functional exposure</p>
+</div>
+</div>
+<div class="who-item">
+<div class="who-dot"></div>
+<div>
+<h4>Staying on course</h4>
+<p>Your want to offload monitoring progress, tracking inter-dependencies, managing task lists, closing communication gaps, mitigating risks</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ADVISORY AREAS -->
+<section id="advisory" style="background: var(--paper-2);">
+<div class="section-inner">
+<span class="section-tag">Advisory areas</span>
+<h2 class="section-h2">Learnings I can help with</h2>
+<p class="section-lead">Here are some areas where early-stage teams can shape a better path by avoiding past pain points</p>
+<div class="areas-grid fade-in">
+<div class="area-card">
+<span class="area-label">Verification strategy</span>
+<h3>Milestone-level quality gates</h3>
+<p>Helping teams define what "done" looks like at each stage — backward-compatibility checks, sign-off criteria, and where to spend review time before a design moves downstream.</p>
+</div>
+<div class="area-card">
+<span class="area-label">AI in verification — early days</span>
+<h3>What I've learned piloting AI in the flow</h3>
+<p>Firsthand experience piloting AI-assisted log parsing for simulation debugging at Intel — a grounded, not theoretical, view of where automated triage genuinely helps, and where teams still need to trust manual review.</p>
+</div>
+<div class="area-card">
+<span class="area-label">IP quality</span>
+<h3>Post-silicon traceability</h3>
+<p>Tracing post-silicon bugs back to root cause at the IP level, and building the checks that catch backward-compatibility issues before they reach SoC customers.</p>
+</div>
+<div class="area-card">
+<span class="area-label">Program execution</span>
+<h3>Milestone &amp; risk discipline</h3>
+<p>Turning roadmaps into trackable milestones, catching schedule risk early, and keeping vendor and EDA partner commitments on track — the operational scaffolding that keeps hardware programs on schedule.</p>
+</div>
+<div class="area-card">
+<span class="area-label">Toolchain decisions</span>
+<h3>EDA tool strategy &amp; migration</h3>
+<p>Practical experience evaluating simulation tools (VCS, QuestaSim, Xcelium) and DFT toolchains (Tessent ICL-PDL), and moving from proprietary to industry-standard flows without disrupting delivery.</p>
+</div>
+<div class="area-card">
+<span class="area-label">Team &amp; org</span>
+<h3>Building &amp; onboarding DV teams</h3>
+<p>Shared infrastructure design, cross-site onboarding programs, and building a team culture where quality and delivery aren't in permanent tension.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+<div class="section-inner">
+<span class="section-tag">About Mala</span>
+<h2 class="section-h2">20+ years across<br/>Qualcomm and Intel</h2>
+<div class="about-grid fade-in">
+<div>
+<div class="about-portrait">
+<img src="assets/msmasti.png" alt="Mala Masti"
+style="width:100%;height:100%;object-fit:cover;border-radius:12px;" />
+</div>
+<div class="about-portrait-sub">Mala S Masti</div>
+</div>
+<div class="about-body">
+<p>I have worked for nearly 12 years at <strong>Qualcomm, San Diego</strong> on the MSM modem series — from conception through post-silicon, across 2G, 2.5G, 3G, and early 4G. I have owned several IPs end to end: architecting, designing, coding, verifying, documenting and demonstrating a few IPs live to high-stakes customers in real-time lab environments.</p>
+<p>Later, I have spent a little over <strong>7.5 years at Intel, Bangalore</strong> running IP programs for up to 10 concurrent SoCs at a time across Xeon server, Core Ultra client, graphics, gaming, DFT, Telemetry, Network edge families. I have been in the roles of a Design Verification Engineering Manager, Design Automation Engineer and an IP Program Manager. I have thus gained a close-up view of the gaps between customer expectation and product quality. I also have a good understanding on how decisions differ vastly when based on technical merit versus business dictates. I hence have a good idea of how to optimally handle conflicting, parallel pressures on defining scope, maintaining schedule and retaining customers</p>
+<p>Additionally I have mentored many university undergarduate and graduate engineering students to get hired as interns and/ or full-time engineers at various hardware product/ service companies in Bangalore.</p>
+<p>I now help a few startups, sharing what I have learned so far - enabling them to make better, informed decisions.</p>
+<div class="credential-row">
+<span class="cred-pill">Qualcomm — Staff Engineer</span>
+<span class="cred-pill">Intel — DV EM &amp; Program Manager</span>
+<span class="cred-pill">IIT Bombay — B.Tech</span>
+<span class="cred-pill">Virginia Tech — M.S.</span>
+<span class="cred-pill">President of India Gold Medal</span>
+<span class="cred-pill">NTSE National Scholarship</span>
+</div>
+<div class="about-links">
+<a class="about-link" href="https://www.linkedin.com/in/malamasti/" target="_blank" rel="noopener">LinkedIn ↗</a>
+<a class="about-link" href="https://github.com/msmasti" target="_blank" rel="noopener">GitHub ↗</a>
+<a class="about-link" href="doc/resume.html" target="_blank">Resume ↗</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+<div class="cta-inner">
+<span class="section-tag">Get in touch</span>
+<h2 class="section-h2">Tell me what you're building.</h2>
+<p class="cta-lead">If you're an early-stage chip or EDA team figuring out program execution, team structure, or the path to tape-out — I'd like to understand the problem. No pitch deck required.</p>
+<a class="cta-email" href="mailto:info@malamasti.com">info@malamasti.com</a><br/>
+<a class="cta-btn" href="mailto:info@malamasti.com">Start a conversation</a>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+<div class="footer-inner">
+<p class="footer-brand"><span>NUM</span> by Mala Masti</p>
+<div class="footer-links">
+<a href="#what">What is NUM</a>
+<a href="#advisory">Advisory areas</a>
+<a href="#about">About</a>
+<a href="https://www.linkedin.com/in/malamasti/" target="_blank" rel="noopener">LinkedIn</a>
+<a href="https://github.com/msmasti" target="_blank" rel="noopener">GitHub</a>
+</div>
+<p class="footer-copy">© 2026 Mala S Masti · Bengaluru, India · All rights reserved</p>
+</div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver((entries) => {
+entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
