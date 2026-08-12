@@ -1,6 +1,6 @@
 # NUM by Mala Masti — Website
 
-Strategic advisory practice for early-stage VLSI and chip startups using AI to redesign hardware processes.
+Advisor for early-stage VLSI and chip start-ups using AI to re-design hardware processes.
 
 ## Site structure
 
